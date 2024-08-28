@@ -1,5 +1,5 @@
 {
-  "name": "read-image",
+  "name": "read-image-llm",
   "version": "0.0.1",
   "main": "src/index.ts",
   "license": "unlicensed",
