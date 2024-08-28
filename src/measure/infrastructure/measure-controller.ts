@@ -5,8 +5,8 @@ import { Get, JsonController, Param, QueryParam, Res } from "routing-controllers
 
 @injectable()
 @JsonController()
-export class ReadingsController {
-  @Get("/readings/:customerCode/list")
+export class MeasureController {
+  @Get("/measure/:customerCode/list")
   public async getReadings(
     @Param("customerCode") customerCode: number,
     @Res() res: Response,
