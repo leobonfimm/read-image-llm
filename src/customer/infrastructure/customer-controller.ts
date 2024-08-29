@@ -28,7 +28,7 @@ export class CustomerController {
       return res.status(StatusCodes.CREATED).send();
     } catch {
       return res.status(StatusCodes.BAD_REQUEST).send({
-        message: "Missing params",
+        "error_description": "Missing params",
       });
     }
   }

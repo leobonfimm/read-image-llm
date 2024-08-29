@@ -1,4 +1,3 @@
-version: '3.7'
 services:
   measure-system-pg:
     image: bitnami/postgresql

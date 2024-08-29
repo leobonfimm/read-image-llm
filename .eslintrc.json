@@ -116,7 +116,8 @@
       { "selector": "parameter", "format": ["camelCase"], "leadingUnderscore": "allow" },
       { "selector": "memberLike", "modifiers": ["private"], "format": ["camelCase"], "leadingUnderscore": "forbid" },
       { "selector": "typeLike", "format": ["PascalCase"] },
-      { "selector": "typeParameter", "format": ["PascalCase"] }
+      { "selector": "typeParameter", "format": ["PascalCase"] },
+      { "selector": "objectLiteralProperty", "format": ["snake_case"] }
     ],
     "@typescript-eslint/no-base-to-string": ["error"],
     "@typescript-eslint/no-dynamic-delete": ["error"],

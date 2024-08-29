@@ -5,6 +5,7 @@ import { useContainer, useExpressServer } from "routing-controllers";
 import { apiContainer } from "#/di-container";
 
 const server = express();
+server.use(express.json({ limit: "10mb" }));
 
 useContainer(apiContainer);
 useExpressServer(server);
