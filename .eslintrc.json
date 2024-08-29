@@ -22,6 +22,7 @@
     "plugin:eslint-comments/recommended"
   ],
   "rules": {
+    "sonarjs/no-duplicate-string": "off",
     "no-restricted-imports": ["error", {
       "patterns": ["./*", "../*"]
     }],
@@ -65,8 +66,6 @@
       "code": 120,
       "ignorePattern": "^import"
     }],
-    "max-lines": ["error", 150],
-    "max-lines-per-function": ["error", 20],
     "max-statements": ["error", 10],
     "max-nested-callbacks": ["error", 3],
     "max-params": ["error", 3],

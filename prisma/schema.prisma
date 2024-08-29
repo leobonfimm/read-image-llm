@@ -14,7 +14,9 @@ datasource db {
 }
 
 model Customer {
-  id      String    @id @default(uuid())
+  id   String @id @default(uuid())
+  name String
+
   Measure Measure[]
 
   @@map("customers")
