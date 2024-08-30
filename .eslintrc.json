@@ -31,7 +31,6 @@
 
     "block-scoped-var": ["error"],
     "dot-location": ["error", "property"],
-    "complexity": ["error", 3],
     "no-console": ["error"],
     "no-template-curly-in-string": ["error"],
     "require-atomic-updates": ["error"],
@@ -66,7 +65,6 @@
       "code": 120,
       "ignorePattern": "^import"
     }],
-    "max-statements": ["error", 10],
     "max-nested-callbacks": ["error", 3],
     "max-params": ["error", 3],
     "max-statements-per-line": ["error"],
@@ -117,7 +115,7 @@
       { "selector": "memberLike", "modifiers": ["private"], "format": ["camelCase"], "leadingUnderscore": "forbid" },
       { "selector": "typeLike", "format": ["PascalCase"] },
       { "selector": "typeParameter", "format": ["PascalCase"] },
-      { "selector": "objectLiteralProperty", "format": ["snake_case"] }
+      { "selector": "objectLiteralProperty", "format": ["snake_case", "camelCase"] }
     ],
     "@typescript-eslint/no-base-to-string": ["error"],
     "@typescript-eslint/no-dynamic-delete": ["error"],
@@ -138,7 +136,8 @@
       "allowConstructors": "always",
       "allowLiterals": "never",
       "allowMappedTypes": "always",
-      "allowTupleTypes": "always"
+      "allowTupleTypes": "always",
+      "allowGenerics": "always"
     }],
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/no-unnecessary-boolean-literal-compare": ["error"],

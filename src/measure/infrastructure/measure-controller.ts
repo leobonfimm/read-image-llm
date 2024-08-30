@@ -4,6 +4,7 @@ import { injectable } from "inversify";
 import { Body, Get, JsonController, Param, Patch, Post, QueryParam, Res } from "routing-controllers";
 import { z } from "zod";
 
+import { readMeasure } from "#/lib/gemini";
 import { prisma } from "#/lib/prisma";
 import { MeasureConfirmRequest, MeasureCreateRequest } from "#/measure/@types/measure";
 
@@ -15,7 +16,7 @@ const registerBodySchema = z.object({
 });
 
 const confirmBodySchema = z.object({
-  measure_id: z.string(),
+  measure_uuid: z.string(),
   confirmed_value: z.number(),
 });
 
@@ -58,12 +59,14 @@ export class MeasureController {
         });
       }
 
+      const { measureValue, measureDate } = await readMeasure(image);
+
       await prisma.measure.create({
         data: {
           image,
-          datetime: measureDateTime,
+          datetime: new Date(measureDate),
           type: measureType,
-          value: 100.87,
+          value: measureValue,
           customerId: customerCode,
         },
       });
@@ -82,12 +85,12 @@ export class MeasureController {
     @Res() res: Response,
     @QueryParam("measure_type") measureTypeRequest?: "WATER" | "GAS"
   ): Promise<Response> {
-    const { success } = z.enum(["WATER", "GAS"]).safeParse(measureTypeRequest)
+    const { success } = z.enum(["WATER", "GAS"]).safeParse(measureTypeRequest);
 
     if (!success) {
       return res.status(StatusCodes.BAD_REQUEST).send({
-        "error_description": "Tipo de medição não permitida."
-      })
+        "error_description": "Tipo de medição não permitida.",
+      });
     }
 
     const customer = await prisma.customer.findFirst({
@@ -104,13 +107,13 @@ export class MeasureController {
     const measures = await prisma.measure.findMany({
       where: {
         customerId: customerCode,
-        type: measureTypeRequest
+        type: measureTypeRequest,
       },
     });
 
     if (measures.length === 0) {
       return res.status(StatusCodes.NOT_FOUND).send({
-        "error_description": "Nenhuma leitura encontrada"
+        "error_description": "Nenhuma leitura encontrada",
       });
     }
 
@@ -124,43 +127,43 @@ export class MeasureController {
   ): Promise<Response> {
     try {
       const {
-        measure_id: measureId,
-        confirmed_value: confirmedValue
-      } = confirmBodySchema.parse(measureConfirm)
+        measure_uuid: measureId,
+        confirmed_value: confirmedValue,
+      } = confirmBodySchema.parse(measureConfirm);
 
       const measure = await prisma.measure.findFirst({
         where: {
-          id: measureId
-        }
-      })
+          id: measureId,
+        },
+      });
 
       if (!measure) {
         return res.status(StatusCodes.BAD_REQUEST).send({
-          "error_description": "Leitura não encontrada."
-        })
+          "error_description": "Leitura não encontrada.",
+        });
       }
 
       if (measure.has_confirmed) {
         return res.status(StatusCodes.CONFLICT).send({
-          "error_description": "Leitura do mês já realizada."
-        })
+          "error_description": "Leitura do mês já realizada.",
+        });
       }
 
       await prisma.measure.update({
         where: {
-          id: measureId
+          id: measureId,
         },
         data: {
           value: confirmedValue,
-          has_confirmed: true
-        }
-      })
+          has_confirmed: true,
+        },
+      });
 
-      return res.status(StatusCodes.OK).send({ "success": true })
+      return res.status(StatusCodes.OK).send({ "success": true });
     } catch {
       return res.status(StatusCodes.BAD_REQUEST).send({
-        "error_description": "Os dados fornecidos no corpo da requisição são inválidos."
-      })
+        "error_description": "Os dados fornecidos no corpo da requisição são inválidos.",
+      });
     }
   }
 }
